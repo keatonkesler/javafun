@@ -2,6 +2,8 @@ package learning_objectives_four;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class largest_number {
 	public static void main(String[] args) throws FileNotFoundException {
@@ -21,37 +23,38 @@ class run_code {
 		
 		Scanner file = new Scanner(new File(file_name));
 		int size = file.nextInt();
+		file.nextLine();
 		for (int a=0;a<size;a++) {
 			line = file.nextLine();
 			line_size = line.length();
-			Integer[] numbers;
+			List<Integer> numbers = new ArrayList<Integer>();
 			for (int i=0;i < line_size;i++) {
-				if (Character.isDigit(line.charAt(i))) {
+				if ((Character.isDigit(line.charAt(i))) || (line.charAt(i) == '-')) {
 					number = "";
 					start = false;
 					if (i == 0) {
 						start = true;
 					}
-					else if (!Character.isDigit(line.charAt(i-1))) {
+					else if ((!Character.isDigit(line.charAt(i-1))) && (line.charAt(i-1) != '-')) {
 						start = true;
 					}
 					if (start == true) {
 						ii = i;
-						while (!Character.isDigit(line.charAt(ii))) {
-							number += line.charAt(ii);
+						while ((Character.isDigit(line.charAt(ii))) || ((ii == i) && (line.charAt(ii) == '-'))) {
+							number += Character.toString(line.charAt(ii));
 							ii++;
-							if (i == line.length()) {
+							if (ii == line.length()) {
 								break;
 							}
 						}
-						numbers[numbers.length] = String.toInteger(number);
+						numbers.add(Integer.parseInt(number));
 					}
 				}
 			}
 			largest = 0;
-			for (int b=0;b < numbers.length;b++) {
-				if (numbers[b] > largest) {
-					largest = numbers[b];
+			for (int b=0;b < numbers.size();b++) {
+				if (numbers.get(b) > largest) {
+					largest = numbers.get(b);
 				}
 			}
 			result += line + " - Largest == " + Integer.toString(largest) + "\n";
