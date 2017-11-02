@@ -4,11 +4,26 @@ import javax.swing.JOptionPane;
 
 public class ceasarCiphers {
 	public static void main(String[] args) {
+		///*
 		run_code code = new run_code();
+		code.setAlpha("abcdefghijklmnopqrstuvwxyz");
+		String[] choices = {"encode","decode","set code","exit"};
 		while (true) {
-			code.user_set_alpha();
-			JOptionPane.showMessageDialog(null,code.user_encode());
+			String choice = (String) JOptionPane.showInputDialog(null,null,null,JOptionPane.QUESTION_MESSAGE,null,choices,choices[0]);
+			if (choice == "set code") {
+				code.user_pick_alpha();
+			}
+			else if (choice == "encode") {
+				JOptionPane.showMessageDialog(null,code.user_encode());
+			}
+			else if (choice == "decode") {
+				JOptionPane.showMessageDialog(null, code.user_decode());
+			}
+			else if (choice == "exit") {
+				break;
+			}
 		}
+		//*/
 	}
 }
 class run_code {
@@ -41,6 +56,16 @@ class run_code {
 			alpha2[i] = Character.toUpperCase(set_alpha.charAt(i));
 		}
 	}
+	public void user_pick_alpha() {
+		String[] code_choices = {"custom","abcdefghijklmnopqrstuvwxyz","abcdefghijklmnopqrstuvwxyz1234567890-=_+,<.>/?'\";:[{]}\\|`~!@#$%^&*()","qwertyuiopasdfghjklzxcvbnm","qwertyuiopasdfghjklzxcvbnm1234567890,<.>/?;:'\"[{]}\\|-_=+!@#$%^&*()`~"};
+		String choice = (String) JOptionPane.showInputDialog(null,null,null,JOptionPane.QUESTION_MESSAGE,null,code_choices,code_choices[0]);
+		if (choice == "custom") {
+			user_set_alpha();
+		}
+		else {
+			setAlpha(choice);
+		}
+	}
 	public void user_set_alpha() {
 		String set_alpha = JOptionPane.showInputDialog("Enter a code key (blank for alphabet)");
 		if (set_alpha.isEmpty()) {
@@ -58,6 +83,18 @@ class run_code {
 			shift_text = JOptionPane.showInputDialog("Shift by what number?");
 		}
 		int shift = Integer.parseInt(shift_text);
+		return encode(term,shift);
+	}
+	public String user_decode() {
+		String term = JOptionPane.showInputDialog("Enter a text");
+		while (term.isEmpty()) {
+			term = JOptionPane.showInputDialog("Enter a text");
+		}
+		String shift_text = JOptionPane.showInputDialog("How much was is shifted?");
+		while (!is_int(shift_text)) {
+			shift_text = JOptionPane.showInputDialog("How much was is shifted?");
+		}
+		int shift = (Integer.parseInt(shift_text))*-1;
 		return encode(term,shift);
 	}
 	public String encode(String term,int shift) {
@@ -96,3 +133,4 @@ class run_code {
 		return result;
 	}
 }
+
