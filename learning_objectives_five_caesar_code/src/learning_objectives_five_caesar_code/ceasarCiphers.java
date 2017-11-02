@@ -1,18 +1,28 @@
 package learning_objectives_five_caesar_code;
 
+import javax.swing.JOptionPane;
+
 public class ceasarCiphers {
 	public static void main(String[] args) {
 		run_code code = new run_code();
-		code.setAlpha("abcdefghijklmnopqrstuvwxyz");
-		System.out.println(code.encode("Cat",1));
-		code.setAlpha("abcdefghijklmnopqrstuvwxYz.!,$?");
-		System.out.println(code.encode("See spot. See spot run?",7));
-		System.out.println(code.encode("AbCdEf ghijk LMNOP qrst UVWxyz .!,$?",25));
+		while (true) {
+			code.user_set_alpha();
+			JOptionPane.showMessageDialog(null,code.user_encode());
+		}
 	}
 }
 class run_code {
 	char[] alpha;
 	char[] alpha2;
+	public boolean is_int(String value) {
+		try {
+			int i = Integer.parseInt(value);
+			return true;
+		}
+		catch(NumberFormatException e) {
+			return false;
+		}
+	}
 	public int index_of(char[] list,char character) {
 		for (int i = 0;i < list.length;i++) {
 			if (list[i] == character) {
@@ -30,6 +40,25 @@ class run_code {
 		for (int i = 0;i < set_alpha.length();i++) {
 			alpha2[i] = Character.toUpperCase(set_alpha.charAt(i));
 		}
+	}
+	public void user_set_alpha() {
+		String set_alpha = JOptionPane.showInputDialog("Enter a code key (blank for alphabet)");
+		if (set_alpha.isEmpty()) {
+			set_alpha = "abcdefghijklmnopqrstuvwxyz";
+		}
+		setAlpha(set_alpha);
+	}
+	public String user_encode() {
+		String term = JOptionPane.showInputDialog("Enter a text");
+		while (term.isEmpty()) {
+			term = JOptionPane.showInputDialog("Enter a text");
+		}
+		String shift_text = JOptionPane.showInputDialog("Shift by what number?");
+		while (!is_int(shift_text)) {
+			shift_text = JOptionPane.showInputDialog("Shift by what number?");
+		}
+		int shift = Integer.parseInt(shift_text);
+		return encode(term,shift);
 	}
 	public String encode(String term,int shift) {
 		String result = "";
