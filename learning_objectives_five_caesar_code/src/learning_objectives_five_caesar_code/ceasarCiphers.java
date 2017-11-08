@@ -1,13 +1,16 @@
 package learning_objectives_five_caesar_code;
 
 import javax.swing.JOptionPane;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.io.File;
 
 public class ceasarCiphers {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		///*
 		run_code code = new run_code();
 		code.setAlpha("abcdefghijklmnopqrstuvwxyz");
-		String[] choices = {"encode","decode","set code","exit"};
+		String[] choices = {"encode","decode","set code","crack","exit"};
 		while (true) {
 			String choice = (String) JOptionPane.showInputDialog(null,null,null,JOptionPane.QUESTION_MESSAGE,null,choices,choices[0]);
 			if (choice == "set code") {
@@ -19,16 +22,28 @@ public class ceasarCiphers {
 			else if (choice == "decode") {
 				JOptionPane.showMessageDialog(null, code.user_decode());
 			}
+			else if (choice == "crack") {
+				JOptionPane.showMessageDialog(null, code.user_crack());
+			}
+			else if (choice == "set_reading") {
+				code.set_reading();
+			}
 			else if (choice == "exit") {
 				break;
 			}
 		}
 		//*/
+		/*
+		String filename = JOptionPane.showInputDialog("Enter the file name:");
+		Scanner file = new Scanner(new File("/home/student/" + filename));
+		String aLine = file.nextLine();
+		*/
 	}
 }
 class run_code {
 	char[] alpha;
 	char[] alpha2;
+	boolean read_text = true;
 	public boolean is_int(String value) {
 		try {
 			int i = Integer.parseInt(value);
@@ -96,6 +111,57 @@ class run_code {
 		}
 		int shift = (Integer.parseInt(shift_text))*-1;
 		return encode(term,shift);
+	}
+	public void set_reading() {
+		String[] read_choices = {"text","file"};
+		String choice = (String) JOptionPane.showInputDialog(null,null,null,JOptionPane.QUESTION_MESSAGE,null,read_choices,read_choices[0]);
+		if (choice == "text") {
+			read_text = true;
+		}
+		else {
+			read_text = false;
+		}
+	}
+	public String user_crack() {
+		String term = JOptionPane.showInputDialog("Enter a text");
+		while (term.isEmpty()) {
+			term = JOptionPane.showInputDialog("Enter a text");
+		}
+		String key = JOptionPane.showInputDialog("Enter a key");
+		while (term.isEmpty()) {
+			key = JOptionPane.showInputDialog("Enter a key");
+		}
+		return crack(term,key);
+	}
+	public String crack(String term,String key) {
+		int shift = 0;
+		String temp_term = "";
+		boolean key_found = false;
+		while (shift < alpha.length) {
+			temp_term = encode(term,shift);
+			for (int i = 0;i < temp_term.length();i++) {
+				if ((temp_term.charAt(i) == key.charAt(0)) && ((i + key.length())) <= temp_term.length()) {
+					key_found = true;
+					for (int a = 0;a < key.length();a++) {
+						if (temp_term.charAt(i+a) != key.charAt(a)) {
+							key_found = false;
+							break;
+						}
+					}
+				}
+				if (key_found == true) {
+					break;
+				}
+			}
+			if (key_found == true) {
+				break;
+			}
+			shift++;
+		}
+		if (key_found == true) {
+			return encode(term,shift);
+		}
+		return "Key not found in text/file";
 	}
 	public String encode(String term,int shift) {
 		String result = "";
