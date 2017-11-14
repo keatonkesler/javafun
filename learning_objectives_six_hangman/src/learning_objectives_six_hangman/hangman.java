@@ -25,7 +25,7 @@ class run_code {
 	String key = "";
 	String pre_pick;
 	char pick;
-	String file_directory = "/home/student/";
+	String file_directory = "/home/student/Desktop/";
 	String[] options;
 	char[] alpha;
 	char[] alphabet;
