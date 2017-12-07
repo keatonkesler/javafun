@@ -203,7 +203,7 @@ class run_code {
 				}
 				else if ((aaa == list.length-1) && (bbb == list[0].length-1)) {
 					player_won = 0;
-					return true;c
+					return true;
 				}
 			}
 			if (bool == true) {
