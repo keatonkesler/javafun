@@ -1,6 +1,7 @@
 //package
 
 import java.awt.event.*;
+import java.awt.Color;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,8 +31,9 @@ public class SwingTemplate {
 class keyboard extends JPanel implements KeyListener,MouseListener {
 	int room_sp = 30;
 	long delay = 1000/room_sp;
+	int room = 0;
 	int[][] keys_pressed;
-	int[] keys = {65,83,87,68,70,32,10,27,37,38,39,40};
+	int[] keys;
 	Animation animation = new Animation();
 	Timer timer = new Timer((int)delay,animation);
 	int key = 0;
@@ -49,6 +51,21 @@ class keyboard extends JPanel implements KeyListener,MouseListener {
 		}
 		catch (Exception e) {
 			System.out.println(e);
+		}
+		//(SP)(ENTER)(ESC)(BACK)(SHIFT)(CTRL)(Le_Up_Ri_Do)
+		String temp_keys = "32,10,27,8,16,17,37,38,39,40";
+		//add 0-9
+		for (int i=0;i<=9;i++) {
+			temp_keys += "," + (i+48);
+		}
+		//adds a-z
+		for (int i=0;i<=25;i++) {
+			temp_keys += "," + (i+65);
+		}
+		String[] temp_keys_two = temp_keys.split(",");
+		keys = new int[temp_keys_two.length];
+		for (int i=0;i<temp_keys_two.length;i++) {
+			keys[i] = Integer.parseInt(temp_keys_two[i]);
 		}
 		keys_pressed = new int[keys.length][2];
 		for (int i=0;i<keys.length;i++) {
